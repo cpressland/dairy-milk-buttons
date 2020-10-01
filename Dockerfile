@@ -1,6 +1,8 @@
-FROM binkhq/python:3.8
+FROM golang:latest AS build
 
-ADD main.py .
+ADD main.go .
+RUN go build .
 
-CMD ["python", "main.py"]
-
+FROM scratch
+COPY --from=build /go/go /
+ENTRYPOINT [ "/go" ]
